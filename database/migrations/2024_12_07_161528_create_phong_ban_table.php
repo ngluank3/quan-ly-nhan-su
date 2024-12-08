@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chuc_vu', function (Blueprint $table) {
+        Schema::create('phong_ban', function (Blueprint $table) {
             $table->id(); // Khóa chính
-            $table->string('ten_chuc_vu'); // Tên chức vụ
+            $table->string('ten_phong_ban'); // Tên phòng ban
+            $table->unsignedBigInteger('truong_phong_id')->nullable(); // FK đến bảng nhan_vien (trưởng phòng)
             $table->timestamps(); // Timestamps mặc định (created_at, updated_at)
-            $table->engine = 'InnoDB'; // Đảm bảo sử dụng InnoDB
+        
+            // Định nghĩa khóa ngoại
+            $table->foreign('truong_phong_id')->references('id')->on('nhan_vien')->onDelete('set null');
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chuc_vu');
+        Schema::dropIfExists('phong_ban');
     }
 };
